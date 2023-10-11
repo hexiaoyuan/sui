@@ -651,6 +651,40 @@ impl ReadApi {
     ) -> SuiRpcResult<ProtocolConfigResponse> {
         Ok(self.api.http.get_protocol_config(version).await?)
     }
+
+    pub async fn get_dynamic_field_object(
+        &self,
+        object_id: ObjectID,
+        name: sui_types::dynamic_field::DynamicFieldName,
+    ) -> SuiRpcResult<SuiObjectResponse> {
+        Ok(self
+            .api
+            .http
+            .get_dynamic_field_object(object_id, name)
+            .await?)
+    }
+
+    pub async fn resolve_name_service_address(&self, name: String) -> SuiRpcResult<SuiAddress> {
+        Ok(self
+            .api
+            .http
+            .resolve_name_service_address(name)
+            .await?
+            .unwrap())
+    }
+
+    pub async fn resolve_name_service_names(
+        &self,
+        address: SuiAddress,
+        cursor: Option<ObjectID>,
+        limit: Option<usize>,
+    ) -> SuiRpcResult<sui_json_rpc_types::Page<String, ObjectID>> {
+        Ok(self
+            .api
+            .http
+            .resolve_name_service_names(address, cursor, limit)
+            .await?)
+    }
 }
 
 /// Coin Read API provides the functionality needed to get information from the Sui network regarding the coins owned by an address.
@@ -1051,6 +1085,29 @@ impl EventApi {
                 }
             },
         )
+    }
+
+
+    pub async fn subscribe_transaction(
+        &self,
+        filter: sui_json_rpc_types::TransactionFilter,
+    ) -> SuiRpcResult<
+        impl Stream<Item = SuiRpcResult<sui_json_rpc_types::SuiTransactionBlockEffects>>,
+    > {
+        match &self.api.ws {
+            Some(c) => {
+                let subscription: Subscription<sui_json_rpc_types::SuiTransactionBlockEffects> =
+                    c.subscribe_transaction(filter).await?;
+                Ok(subscription.map(|item| Ok(item?)))
+            }
+            _ => Err(Error::Subscription(
+                "Subscription only supported by WebSocket client.".to_string(),
+            )),
+        }
+    }
+
+    pub fn is_connected(&self) -> bool {
+        self.api.ws.as_ref().map_or(false, |v| v.is_connected())
     }
 }
 
