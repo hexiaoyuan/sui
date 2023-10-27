@@ -72,7 +72,7 @@ git switch -c sui-v1.11_pt01  upstream/releases/sui-v1.11.0-release
 
 git push --set-upstream origin
 ... merge diff to view ...
-https://github.com/MystenLabs/sui/compare/sui-v1.11.0-release...hexiaoyuan:sui:sui-v1.11_pt01
+https://github.com/MystenLabs/sui/compare/releases/sui-v1.11.0-release...hexiaoyuan:sui:sui-v1.11_pt01
 ......
 cargo build --release -p sui
 git push
