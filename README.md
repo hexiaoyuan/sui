@@ -56,3 +56,30 @@ Use the following links to learn more about Sui and the Sui ecosystem:
  * Join the Sui community on [Sui Discord](https://discord.gg/sui).
  * Find out more about the Sui ecosystem on the [Sui Resources](https://sui.io/resources/) page.
  * Review information about Sui governance, [decentralization](https://suifoundation.org/decentralization), and [Developer Grants Program](https://suifoundation.org/#grants) on the [Sui Foundation](https://suifoundation.org/) site.
+
+
+## my fork
+
+```
+git remote add upstream https://github.com/MystenLabs/sui
+## fork from upstream-branch
+git fetch upstream
+git switch -c sui-v1.14  upstream/releases/sui-v1.14.0-release
+### fork from upstream-tag:
+#git fetch upstream refs/tags/mainnet-v1.14.2:refs/tags/mainnet-v1.14.2
+#git switch -c sui-v1.14_pt01 mainnet-v1.14.2
+#
+git push --set-upstream origin
+#
+#... merge diff to view ...
+https://github.com/MystenLabs/sui/compare/releases/sui-v1.14.0-release...hexiaoyuan:sui:sui-v1.14_pt01
+#......
+#
+cargo build --release -p sui
+git push
+#
+#
+git clone --branch sui-v1.14_pt01 git@github.com:hexiaoyuan/sui.git
+sudo apt install build-essential libprotobuf-dev libssl-dev libclang-dev pkg-config openssl protobuf-compiler clang cmake libpq-dev
+cargo build --release -p sui
+```
