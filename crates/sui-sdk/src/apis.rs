@@ -684,18 +684,6 @@ impl ReadApi {
     }
 
 
-    pub async fn get_dynamic_field_object(
-        &self,
-        object_id: ObjectID,
-        name: sui_types::dynamic_field::DynamicFieldName,
-    ) -> SuiRpcResult<SuiObjectResponse> {
-        Ok(self
-            .api
-            .http
-            .get_dynamic_field_object(object_id, name)
-            .await?)
-    }
-
     pub async fn resolve_name_service_address(&self, name: String) -> SuiRpcResult<SuiAddress> {
         Ok(self
             .api
